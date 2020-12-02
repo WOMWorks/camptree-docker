@@ -8,8 +8,29 @@ I customized this docker-compose setup to run camptree.
 - Modified config/php/php.ini to use the session save path
 
 A few notes: 
-- mysql puts its data in data/mysql
+- mysql puts its data in data/mysql. Data will persist despite containers
+  being shutdown or images wiped out. If you change mysql versions you 
+  will probably need to wipe this directory out.
 - phpmyadmin puts session data in the pma directory
+- I fought with the php session storage for a while. As a result there
+  are two different php.ini files, one for the main server, and one
+  for PPHMyAdmin. There is probably a better way.
+
+Here is a sample directory structure that should work with this docker-compose
+setup:
+
+- camptree-projects
+  - camptree (contains the camptree codeigniter version)
+  - camptree-docker (this repo)
+
+From the camptree-docker directory you should be able to run 
+`docker-compose up  -d` after setting up you `.env` file. If 
+you're having startup problems, run that command without the 
+`-d` to make it easier to get to the outputof the various 
+containers.
+
+When you need to rebuild the project run 
+`docker-compose up --build -d.`
 
 ![Landing Page](https://preview.ibb.co/gOTa0y/LAMP_STACK.png)
 
